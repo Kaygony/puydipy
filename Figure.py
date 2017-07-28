@@ -40,7 +40,7 @@ class IsoscelesTriangle(Triangle):    #равнобедренный треуго
         self.l=l
 
 
-
+#дальше пока не делал
 class Rectangle(Polygon):
 
 
