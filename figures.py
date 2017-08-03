@@ -1,3 +1,4 @@
+
 class Figure:
     pass
 
@@ -6,6 +7,18 @@ class Point(Figure):
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    def __repr__(self):
+        return 'Point({}, {})'.format(round(self.x), round(self.y))
+
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __mul__(self, n):
+        return Point(self.x * n, self.y * n)
+
+    def __truediv__(self, n):
+        return Point(self.x / n, self.y / n)
 
 
 class Circle(Point):
@@ -19,9 +32,13 @@ class Polygon(Figure):
         self.points = points
 
 
-class Line(Polygon):
+class Line(Figure):
     def __init__(self, p1, p2):
-        super().__init__(p1, p2)
+        self.p1 = p1
+        self.p2 = p2
+        '''не смотри repr'''
+    def __repr__(self):
+        return 'Point({}, {})'.format(round(self.x), round(self.y))
 
 
 class Triangle(Polygon):
