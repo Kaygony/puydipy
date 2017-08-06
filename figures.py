@@ -9,10 +9,7 @@ class Point(Figure):
         self.y = round(y)
 
     def __repr__(self):
-        return 'Point({}, {})'.format(self.x, self.y)
-
-    def __add__(self, other):
-        return Point(self.x + other.x, self.y + other.y)
+        return 'Point({0}, {1})'.format(self.x, self.y)
 
     def __mul__(self, n):
         return Point(self.x * n, self.y * n)
@@ -38,19 +35,18 @@ class Line(Figure):
         self.p2 = p2
 
     def __repr__(self):
-        return 'Line(Point({}, {}), Point({}, {}))'.format(self.p1.x, self.p1.y, self.p2.x, self.p2.y)
+        return 'Line({0}, {1}))'.format(self.p1, self.p2)
 
     def __add__(self, other):
         return Line(Point(self.p1.x, self.p1.y),
                     Point(self.p2.x + (other.p2.x - other.p1.x), self.p2.y + (other.p2.y - other.p1.y)))
 
-    def __mul__(self, n):
+    def __sub__(self, other):
         return Line(Point(self.p1.x, self.p1.y),
-                    Point((self.p2.x - self.p1.x) * n + self.p1.x, (self.p2.y - self.p1.y) * n + self.p1.y))
+                    Point(self.p2.x - other.p2.x + other.p1.x, self.p2.y - other.p2.y + other.p1.y))
 
-    def __truediv__(self, n):
-        return Line(Point(self.p1.x, self.p1.y),
-                    Point((self.p2.x - self.p1.x) / n + self.p1.x, (self.p2.y - self.p1.y) / n + self.p1.y))
+    def __abs__(self):
+        return ((self.p2.x - self.p1.x) ** 2 + (self.p2.y - self.p1.y) ** 2) ** (1/2)
 
 
 class Triangle(Polygon):
