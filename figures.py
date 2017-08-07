@@ -1,4 +1,4 @@
-
+import math
 class Figure:
     pass
 
@@ -9,7 +9,7 @@ class Point(Figure):
         self.y = round(y)
 
     def __repr__(self):
-        return 'Point({0}, {1})'.format(self.x, self.y)
+        return '<Point({0}, {1})>'.format(self.x, self.y)
 
     def __mul__(self, n):
         return Point(self.x * n, self.y * n)
@@ -28,6 +28,9 @@ class Polygon(Figure):
     def __init__(self, *points):
         self.points = points
 
+    def __repr__(self):
+        return '<{0}{1} figure>'.format(self.__class__.__name__, self.points)
+
 
 class Line(Figure):
     def __init__(self, p1, p2):
@@ -35,7 +38,7 @@ class Line(Figure):
         self.p2 = p2
 
     def __repr__(self):
-        return 'Line({0}, {1}))'.format(self.p1, self.p2)
+        return '<Line({0}, {1}))>'.format(self.p1, self.p2)
 
     def __add__(self, other):
         return Line(Point(self.p1.x, self.p1.y),
@@ -87,3 +90,13 @@ class Square(Rectangle):
         l_d = p
         r_u = Point(p.x + l, p.y + l)
         super().__init__(l_d, r_u)
+
+class EquilateralPolygon(Polygon):
+    def __init__(self, center_point, r, vertices):
+        points = []
+        angles = 360 / vertices
+        for n in range(vertices):
+            angle = angles * n
+            points.append(Point(center_point.x + math.cos(math.radians(angle)) * r,
+                                center_point.y + math.sin(math.radians(angle)) * r))
+        super().__init__(*points)
