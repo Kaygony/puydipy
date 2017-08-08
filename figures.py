@@ -1,6 +1,10 @@
 import math
+from pygame import draw
+
+
 class Figure:
-    pass
+    def draw(self, game_display, color):
+        raise NotImplementedError
 
 
 class Point(Figure):
@@ -17,11 +21,17 @@ class Point(Figure):
     def __truediv__(self, n):
         return Point(self.x / n, self.y / n)
 
+    def draw(self, game_display, color):
+        draw.circle(game_display, color, (self.x, self.y), 1)
+
 
 class Circle(Point):
     def __init__(self, x, y, r):
         super().__init__(x, y)
-        self.r = r
+        self.r = round(r)
+
+    def draw(self, game_display, color):
+        draw.circle(game_display, color, (self.x, self.y), self.r)
 
 
 class Polygon(Figure):
@@ -30,6 +40,10 @@ class Polygon(Figure):
 
     def __repr__(self):
         return '<{0}{1} figure>'.format(self.__class__.__name__, self.points)
+
+    def draw(self, game_display, color):
+        game_points = [[point.x, point.y] for point in self.points]
+        draw.polugon(game_display, color, game_points)
 
 
 class Line(Figure):
@@ -50,6 +64,9 @@ class Line(Figure):
 
     def __abs__(self):
         return ((self.p2.x - self.p1.x) ** 2 + (self.p2.y - self.p1.y) ** 2) ** (1/2)
+
+    def draw(self, game_display, color):
+        draw.line(game_display, color, [self.p1.x, self.p1.y], [self.p2.x, self.p2.y])
 
 
 class Triangle(Polygon):
@@ -93,6 +110,7 @@ class Square(Rectangle):
 
 class EquilateralPolygon(Polygon):
     def __init__(self, center_point, r, vertices):
+        self.r = round(r)
         points = []
         angles = 360 / vertices
         for n in range(vertices):
