@@ -1,5 +1,7 @@
-from figures import *
 import pygame
+
+import figures
+from colors import *
 
 pygame.init()
 
@@ -19,10 +21,10 @@ def game_loop():
 
         game_display.fill(WHITE)
 
-        p1 = Point(150, 160)
-        p2 = Point(200, 200)
-        Line(p1, p2, color=RED).draw(game_display)
+        p1 = figures.Point(150, 160)
+        p2 = figures.Point(200, 200)
         p1.draw(game_display)
+        figures.Line(p1, p2, color=RED).draw(game_display)
         p2.draw(game_display)
 
         pygame.display.update()
