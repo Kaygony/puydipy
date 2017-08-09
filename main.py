@@ -6,12 +6,6 @@ pygame.init()
 display_width = 800
 display_height = 600
 
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('MyGame')
 clock = pygame.time.Clock()
@@ -27,11 +21,9 @@ def game_loop():
 
         p1 = Point(150, 150)
         p2 = Point(200, 200)
-        Line(p1, p2).draw(game_display, RED)
-        p1.draw(game_display, BLACK)
-        p2.draw(game_display, BLACK)
-
-
+        Line(p1, p2, color=RED).draw(game_display)
+        p1.draw(game_display)
+        p2.draw(game_display)
 
         pygame.display.update()
         clock.tick(60)
