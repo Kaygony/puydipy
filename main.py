@@ -19,7 +19,7 @@ def game_loop():
 
         game_display.fill(WHITE)
 
-        p1 = Point(150, 150)
+        p1 = Point(150, 160)
         p2 = Point(200, 200)
         Line(p1, p2, color=RED).draw(game_display)
         p1.draw(game_display)
