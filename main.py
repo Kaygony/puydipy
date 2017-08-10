@@ -26,6 +26,7 @@ def game_loop():
         p1.draw(game_display)
         figures.Line(p1, p2, color=RED).draw(game_display)
         p2.draw(game_display)
+        figures.Triangle(figures.Point(300, 320), figures.Point(350, 400), figures.Point(400, 350)).draw(game_display)
 
         pygame.display.update()
         clock.tick(60)

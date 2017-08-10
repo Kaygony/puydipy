@@ -19,6 +19,7 @@ class Point(Figure):
     def __init__(self, x, y, color=None):
         self.x = round(x)
         self.y = round(y)
+        self.coords = (self.x, self.y)
         super().__init__(color)
 
     def __repr__(self):
@@ -31,7 +32,7 @@ class Point(Figure):
         return Point(self.x / n, self.y / n)
 
     def draw(self, game_display):
-        pygame.draw.circle(game_display, self.color, (self.x, self.y), 1)
+        pygame.draw.circle(game_display, self.color, self.coords, 1)
 
 
 class Circle(Point):
@@ -40,7 +41,7 @@ class Circle(Point):
         self.r = round(r)
 
     def draw(self, game_display):
-        pygame.draw.circle(game_display, self.color, (self.x, self.y), self.r)
+        pygame.draw.circle(game_display, self.color, self.coords, self.r)
 
 
 class Polygon(Figure):
@@ -52,8 +53,7 @@ class Polygon(Figure):
         return '<{0}{1} figure>'.format(self.__class__.__name__, self.points)
 
     def draw(self, game_display):
-        points = self.points
-        pygame.draw.polygon(game_display, self.color, points)
+        pygame.draw.polygon(game_display, self.color, [self.points[i].coords for i in range(len(self.points)-1)])
 
 
 class Line(Figure):
@@ -67,7 +67,7 @@ class Line(Figure):
 
     def __add__(self, other):
         return Line(Point(self.start.x, self.start.y),
-                    Point(self.end.x + (other.p2.x - other.p1.x), self.end.y + (other.end.y - other.start.y)))
+                    Point(self.end.x + (other.end.x - other.start.x), self.end.y + (other.end.y - other.start.y)))
 
     def __sub__(self, other):
         return Line(Point(self.start.x, self.start.y),
@@ -77,7 +77,7 @@ class Line(Figure):
         return ((self.end.x - self.start.x) ** 2 + (self.end.y - self.start.y) ** 2) ** (1/2)
 
     def draw(self, game_display):
-        pygame.draw.line(game_display, self.color, (self.start.x, self.start.y), (self.end.x, self.end.y))
+        pygame.draw.line(game_display, self.color, self.start.coords, self.end.coords)
 
 
 class Triangle(Polygon):
