@@ -1,7 +1,8 @@
 import pygame
 
+import character
+import colors
 import figures
-from colors import *
 
 pygame.init()
 
@@ -19,14 +20,15 @@ def game_loop():
             if event.type == pygame.QUIT:
                 game_exit = True
 
-        game_display.fill(WHITE)
+        game_display.fill(colors.WHITE)
 
         p1 = figures.Point(150, 160)
         p2 = figures.Point(200, 200)
         p1.draw(game_display)
-        figures.Line(p1, p2, color=RED).draw(game_display)
+        figures.Line(p1, p2, color=colors.RED).draw(game_display)
         p2.draw(game_display)
-        figures.Triangle(figures.Point(300, 320), figures.Point(350, 400), figures.Point(400, 350)).draw(game_display)
+        figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
+        character.Character(500, 500, colors.BLACK).draw(game_display)
 
         pygame.display.update()
         clock.tick(60)
