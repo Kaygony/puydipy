@@ -1,18 +1,17 @@
 import figures
 
 
-class Character(figures.Figure):
-    def __init__(self, x, y, color=None):
-        self.body = (figures.Line(figures.Point(x, y), figures.Point(x, y + 100), color),
-                     figures.Circle(x, y - 25, 25, color),
-                     figures.Line(figures.Point(x, y), figures.Point(x - 50, y + 75), color),
-                     figures.Line(figures.Point(x, y), figures.Point(x + 50, y + 75), color),
-                     figures.Line(figures.Point(x, y + 100), figures.Point(x - 50, y + 150), color),
-                     figures.Line(figures.Point(x, y + 100), figures.Point(x + 50, y + 150), color))
-        super().__init__(color)
+class Character:
+    def __init__(self, x, y):
+        self.body_parts = {'head': figures.Circle(x, y - 5, 5),
+                           'torso': figures.Line(figures.Point(x, y), figures.Point(x, y + 25)),
+                           'l_arm': figures.Line(figures.Point(x, y), figures.Point(x - 10, y + 15)),
+                           'r_arm': figures.Line(figures.Point(x, y), figures.Point(x + 10, y + 15)),
+                           'l_leg': figures.Line(figures.Point(x, y + 25), figures.Point(x - 10, y + 20)),
+                           'r_leg': figures.Line(figures.Point(x, y + 25), figures.Point(x + 10, y + 200))}
 
     def draw(self, game_display):
-        for body_part in self.body:
+        for body_part in self.body_parts.values():
             body_part.draw(game_display)
 
 

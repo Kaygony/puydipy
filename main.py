@@ -28,7 +28,7 @@ def game_loop():
         figures.Line(p1, p2, color=colors.RED).draw(game_display)
         p2.draw(game_display)
         figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
-        character.Character(500, 500, colors.BLACK).draw(game_display)
+        character.Character(500, 500).draw(game_display)
 
         pygame.display.update()
         clock.tick(60)

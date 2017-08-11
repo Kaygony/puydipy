@@ -74,8 +74,7 @@ class TestFigures:
     ])
     def test_polygon_points(self, p1, p2, p3, p4):
         polygon = figures.Polygon(p1, p2, p3, p4)
-        assert polygon.points[0] == p1 and polygon.points[1] == p2 and polygon.points[2] == p3 and \
-            polygon.points[3] == p4
+        assert polygon.points == [p1, p2, p3, p4]
 
     @pytest.mark.parametrize('p1,p2', [
         (figures.Point(1, 1), figures.Point(2, 3))
