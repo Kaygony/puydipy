@@ -10,6 +10,7 @@ display_width = 800
 display_height = 600
 
 game_display = pygame.display.set_mode((display_width, display_height))
+game_display.fill(colors.WHITE)
 pygame.display.set_caption('MyGame')
 clock = pygame.time.Clock()
 
@@ -20,18 +21,19 @@ def game_loop():
             if event.type == pygame.QUIT:
                 game_exit = True
 
-        game_display.fill(colors.WHITE)
-
         p1 = figures.Point(150, 160)
         p2 = figures.Point(200, 200)
         p1.draw(game_display)
         figures.Line(p1, p2, color=colors.RED).draw(game_display)
         p2.draw(game_display)
         figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
-        character.Character(500, 500).draw(game_display)
+        chel = character.Character(400, 400)
+        chel.draw(game_display)
+        chel.wave_arms(game_display)
 
         pygame.display.update()
         clock.tick(60)
 
 game_loop()
 pygame.quit()
+

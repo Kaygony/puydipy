@@ -5,14 +5,16 @@ import pygame
 import colors
 
 
-class Figure:
+class Drawable:
+    def draw(self, game_display):
+        raise NotImplementedError
+
+
+class Figure(Drawable):
     def __init__(self, color=None):
         if not color:
             color = colors.BLACK
         self.color = color
-
-    def draw(self, game_display):
-        raise NotImplementedError
 
 
 class Point(Figure):
