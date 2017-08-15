@@ -1,8 +1,7 @@
-import time
+import math
 
 import pygame
 
-import colors
 import figures
 
 
@@ -20,40 +19,20 @@ class Character(figures.Drawable):
             body_part.draw(game_display)
 
     def wave_arms(self, game_display):
-        l_arm_up = self.body_parts['l_arm'].start.y
-        l_arm_down = self.body_parts['l_arm'].end.y
-        while self.body_parts['l_arm'].end.y != l_arm_up:
-            self.body_parts['l_arm'].color = colors.WHITE
-            self.body_parts['r_arm'].color = colors.WHITE
-            self.body_parts['l_arm'].draw(game_display)
-            self.body_parts['r_arm'].draw(game_display)
-            self.body_parts['l_arm'].color = colors.BLACK
-            self.body_parts['r_arm'].color = colors.BLACK
+        while (self.body_parts['l_arm'].start.y / self.body_parts['l_arm'].start.x) != (2 * math.pi) / 3:
+            self.body_parts['l_arm'].end.x += -1
             self.body_parts['l_arm'].end.y += -1
-            self.body_parts['l_arm'].end.x += -0.314
+            self.body_parts['r_arm'].end.x += 1
             self.body_parts['r_arm'].end.y += -1
-            self.body_parts['r_arm'].end.x += 0.314
-            print(self.body_parts['l_arm'].end)
-            print(self.body_parts['r_arm'].end)
-            self.body_parts['l_arm'].draw(game_display)
-            self.body_parts['r_arm'].draw(game_display)
+            self.draw(game_display)
             pygame.display.update()
-            time.sleep(0.05)
-        while self.body_parts['l_arm'].end.y != l_arm_down:
-            self.body_parts['l_arm'].color = colors.WHITE
-            self.body_parts['r_arm'].color = colors.WHITE
-            self.body_parts['l_arm'].draw(game_display)
-            self.body_parts['r_arm'].draw(game_display)
-            self.body_parts['l_arm'].color = colors.BLACK
-            self.body_parts['r_arm'].color = colors.BLACK
+        while (self.body_parts['l_arm'].start.y / self.body_parts['l_arm'].start.x) != (4 * math.pi) / 3:
+            self.body_parts['l_arm'].end.x += 1
             self.body_parts['l_arm'].end.y += 1
-            self.body_parts['l_arm'].end.x += 0.314
+            self.body_parts['r_arm'].end.x += -1
             self.body_parts['r_arm'].end.y += 1
-            self.body_parts['r_arm'].end.x += -0.314
-            self.body_parts['l_arm'].draw(game_display)
-            self.body_parts['r_arm'].draw(game_display)
+            self.draw(game_display)
             pygame.display.update()
-            time.sleep(0.05)
 
-    def mov(self):
+    def move(self):
         pass
