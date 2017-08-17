@@ -16,6 +16,8 @@ clock = pygame.time.Clock()
 
 def game_loop():
     ch = character.Character(400, 400)
+    left = False
+    right = False
     game_exit = False
     while not game_exit:
         for event in pygame.event.get():
@@ -31,6 +33,19 @@ def game_loop():
         p2.draw(game_display)
         figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
         ch.wave_arms(game_display)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                left = True
+            if event.key == pygame.K_RIGHT:
+                right = True
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                right = False
+            if event.key == pygame.K_LEFT:
+                left = False
+        ch.move(left, right)
 
         pygame.display.update()
         clock.tick(60)

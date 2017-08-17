@@ -1,5 +1,7 @@
 import figures
 
+MOVE_SPEED = 2
+
 
 class Character(figures.Drawable):
     def __init__(self, x, y):
@@ -10,6 +12,7 @@ class Character(figures.Drawable):
                            'l_leg': figures.Line(figures.Point(x, y + 50), figures.Point(x - 20, y + 90)),
                            'r_leg': figures.Line(figures.Point(x, y + 50), figures.Point(x + 20, y + 90))}
         self.trigger_up = 0
+        self.x_move = 0
 
     def draw(self, game_display):
         for body_part in self.body_parts.values():
@@ -33,6 +36,24 @@ class Character(figures.Drawable):
             self.body_parts['r_arm'].end.y += 1
             self.draw(game_display)
 
-    def move(self):
-        pass
+    def move(self, left, right):
+        if left:
+            self.x_move = -MOVE_SPEED
 
+        if right:
+            self.x_move = MOVE_SPEED
+
+        if not (left or right):
+            self.x_move = 0
+
+        self.body_parts['head'].x += self.x_move
+        self.body_parts['torso'].start.x += self.x_move
+        self.body_parts['torso'].end.x += self.x_move
+        self.body_parts['l_arm'].start.x += self.x_move
+        self.body_parts['l_arm'].end.x += self.x_move
+        self.body_parts['r_arm'].start.x += self.x_move
+        self.body_parts['r_arm'].end.x += self.x_move
+        self.body_parts['l_leg'].start.x += self.x_move
+        self.body_parts['l_leg'].end.x += self.x_move
+        self.body_parts['r_leg'].start.x += self.x_move
+        self.body_parts['r_leg'].end.x += self.x_move
