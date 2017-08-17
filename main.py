@@ -15,6 +15,7 @@ pygame.display.set_caption('MyGame')
 clock = pygame.time.Clock()
 
 def game_loop():
+    ch = character.Character(400, 400)
     game_exit = False
     while not game_exit:
         for event in pygame.event.get():
@@ -29,7 +30,7 @@ def game_loop():
         figures.Line(p1, p2, color=colors.RED).draw(game_display)
         p2.draw(game_display)
         figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
-        character.Character(400, 400).draw(game_display)
+        ch.wave_arms(game_display)
 
         pygame.display.update()
         clock.tick(60)

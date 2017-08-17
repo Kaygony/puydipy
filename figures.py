@@ -21,8 +21,11 @@ class Point(Figure):
     def __init__(self, x, y, color=None):
         self.x = round(x)
         self.y = round(y)
-        self.coords = (self.x, self.y)
         super().__init__(color)
+
+    @property
+    def coords(self):
+        return self.x, self.y
 
     def __repr__(self):
         return '<Point({0}, {1})>'.format(self.x, self.y)
