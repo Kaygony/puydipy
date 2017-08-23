@@ -4,6 +4,8 @@ import pygame
 
 import colors
 
+SEG_SIZE = 5
+
 
 class Drawable:
     def draw(self, game_display):
@@ -130,7 +132,7 @@ class Rectangle(Polygon):
     def __init__(self, l_d, r_u, color=None):
         l_u = Point(l_d.x, r_u.y)
         r_d = Point(r_u.x, l_d.x)
-        super().__init__(l_d, l_u, r_d, r_u, color)
+        super().__init__(l_d, l_u, r_u, r_d, color)
 
 
 class Square(Rectangle):

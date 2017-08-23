@@ -15,37 +15,36 @@ pygame.display.set_caption('MyGame')
 clock = pygame.time.Clock()
 
 def game_loop():
-    ch = character.Character(400, 400)
+    ch = character.Snake(3)
+    p = figures.Point(100, 100)
     left = False
     right = False
+    up = False
+    down = False
     game_exit = False
+
     while not game_exit:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True
 
         game_display.fill(colors.WHITE)
-
-        p1 = figures.Point(150, 160)
-        p2 = figures.Point(200, 200)
-        p1.draw(game_display)
-        figures.Line(p1, p2, color=colors.RED).draw(game_display)
-        p2.draw(game_display)
-        figures.Triangle(figures.Point(350, 400), figures.Point(300, 200), figures.Point(400, 350)).draw(game_display)
-        ch.wave_arms(game_display)
+        figures.Square(p, 20)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                left = True
-            if event.key == pygame.K_RIGHT:
-                right = True
+                ch.move_left()
+            elif event.key == pygame.K_RIGHT:
+                ch.move_right()
+            elif event.key == pygame.K_UP:
+                ch.move_up()
+            elif event.key == pygame.K_DOWN:
+                ch.move_down()
+            if event.key == pygame.K_ESCAPE:
+                game_exit = True
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_RIGHT:
-                right = False
-            if event.key == pygame.K_LEFT:
-                left = False
-        ch.move(left, right)
+        ch.update()
+        ch.draw(game_display)
 
         pygame.display.update()
         clock.tick(60)
