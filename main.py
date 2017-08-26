@@ -1,8 +1,11 @@
+import random
+
 import pygame
 
 import character
 import colors
 import figures
+import game
 
 pygame.init()
 
@@ -16,11 +19,7 @@ clock = pygame.time.Clock()
 
 def game_loop():
     ch = character.Snake(3)
-    p = figures.Point(100, 100)
-    left = False
-    right = False
-    up = False
-    down = False
+    apple = character.Apple(1, 1)
     game_exit = False
 
     while not game_exit:
@@ -29,7 +28,6 @@ def game_loop():
                 game_exit = True
 
         game_display.fill(colors.WHITE)
-        figures.Square(p, 20)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
@@ -45,10 +43,25 @@ def game_loop():
 
         ch.update()
         ch.draw(game_display)
+        apple.draw(game_display)
+
+        figures.Circle(200, 200, 20, colors.RED).draw(game_display)
+
+        for i in range(2, ch.length):
+            if game.collision(ch.segment_x[0], ch.segment_y[0], ch.segment_x[i], ch.segment_y[i], 10):
+                print("You lose!")
+                exit(0)
+
+        for i in range(0, ch.length):
+            if game.collision(apple.x, apple.y, ch.segment_x[0], ch.segment_y[0], 10):
+                apple.x = random.randint(2, 9) * 10
+                apple.y = random.randint(2, 9) * 10
+                ch.score += 1
+                print(ch.score)
 
         pygame.display.update()
         clock.tick(60)
 
+
 game_loop()
 pygame.quit()
-

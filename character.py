@@ -1,3 +1,6 @@
+import random
+
+import colors
 import figures
 
 MOVE_SPEED = 2
@@ -59,17 +62,26 @@ class Character(figures.Drawable):
         self.body_parts['r_leg'].end.x += self.x_move
 
 
-class Snake(figures.Drawable):
+class Apple(figures.Drawable):
+    def __init__(self, x, y):
+        self.x = x * random.randint(0, 780)
+        self.y = y * random.randint(20, 580)
 
+    def draw(self, game_display):
+        figures.Square(figures.Point(self.x, self.y), 20, color=colors.RED).draw(game_display)
+
+
+class Snake(figures.Drawable):
     step = 20
     direction = 1
+    score = 0
 
     # Для ограничения скорости
     update_count_max = 8
     update_count = 0
 
     def __init__(self, length):
-        self.length = length
+        self.length = length + self.score
         self.segment_x = []
         self.segment_y = []
         for i in range(0, length):
@@ -114,4 +126,4 @@ class Snake(figures.Drawable):
 
     def draw(self, game_display):
         for i in range(0, self.length):
-            figures.Circle(self.segment_x[i], self.segment_y[i], 10).draw(game_display)
+            figures.Square(figures.Point(self.segment_x[i], self.segment_y[i]), 20).draw(game_display)

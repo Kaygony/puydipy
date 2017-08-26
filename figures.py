@@ -23,7 +23,7 @@ class Point(Figure):
     def __init__(self, x, y, color=None):
         self.x = round(x)
         self.y = round(y)
-        super().__init__(color)
+        super().__init__(color=color)
 
     @property
     def coords(self):
@@ -50,7 +50,7 @@ class Circle(Point):
         self.r = round(r)
         if self.r <= 0:
             raise ValueError('Radius must be 1 or higher')
-        super().__init__(x, y, color)
+        super().__init__(x, y, color=color)
 
     def draw(self, game_display):
         pygame.draw.circle(game_display, self.color, self.coords, self.r)
@@ -61,20 +61,22 @@ class Polygon(Figure):
         self.points = points
         if len(points) < 3:
             raise ValueError('Polygon must have 3 or more vertices')
-        super().__init__(color)
+        if not all(isinstance(point, Point) for point in points):
+            raise ValueError('Not all Points')
+        super().__init__(color=color)
 
     def __repr__(self):
         return '<{0}{1} figure>'.format(self.__class__.__name__, self.points)
 
     def draw(self, game_display):
-        pygame.draw.polygon(game_display, self.color, [point.coords for point in self.points[:-1]])
+        pygame.draw.polygon(game_display, self.color, [point.coords for point in self.points])
 
 
 class Line(Figure):
     def __init__(self, start, end, color=None):
         self.start = start
         self.end = end
-        super().__init__(color)
+        super().__init__(color=color)
 
     def __repr__(self):
         return '<Line({0}, {1}))>'.format(self.start, self.end)
@@ -101,7 +103,7 @@ class Triangle(Polygon):
     def __init__(self, p1, p2, p3, color=None):
         if (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x) == 0:
             raise ValueError('Points must not be on the same line')
-        super().__init__(p1, p2, p3, color)
+        super().__init__(p1, p2, p3, color=color)
 
 
 class IsoscelesTriangle(Triangle):
@@ -125,21 +127,21 @@ class IsoscelesTriangle(Triangle):
             m = c / p2.y
             n = (l ** 2 - (c ** 2) / p2.y ** 2) ** (1 / 2)
         p3 = Point(n, m)
-        super().__init__(p1, p2, p3, color)
+        super().__init__(p1, p2, p3, color=color)
 
 
 class Rectangle(Polygon):
     def __init__(self, l_d, r_u, color=None):
         l_u = Point(l_d.x, r_u.y)
-        r_d = Point(r_u.x, l_d.x)
-        super().__init__(l_d, l_u, r_u, r_d, color)
+        r_d = Point(r_u.x, l_d.y)
+        super().__init__(l_d, l_u, r_u, r_d, color=color)
 
 
 class Square(Rectangle):
     def __init__(self, p, l, color=None):
         l_d = p
         r_u = Point(p.x + l, p.y + l)
-        super().__init__(l_d, r_u, color)
+        super().__init__(l_d, r_u, color=color)
 
 
 class EquilateralPolygon(Polygon):
@@ -155,4 +157,4 @@ class EquilateralPolygon(Polygon):
             angle = angles * n
             points.append(Point(center_point.x + math.cos(math.radians(angle)) * r,
                                 center_point.y + math.sin(math.radians(angle)) * r))
-        super().__init__(*points, color)
+        super().__init__(*points, color=color)
