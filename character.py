@@ -81,7 +81,7 @@ class Snake(figures.Drawable):
     update_count = 0
 
     def __init__(self, length):
-        self.length = length + self.score
+        self.length = length
         self.segment_x = []
         self.segment_y = []
         for i in range(0, length):
