@@ -17,21 +17,25 @@ game_display = pygame.display.set_mode((display_width, display_height))
 
 pygame.display.set_caption('MyGame')
 clock = pygame.time.Clock()
-peewee_bd.db.connect()
-peewee_bd.db.create_tables(peewee_bd.Snake)
+peewee_bd.Snake.create_table(fail_silently=True)
 
 
 def game_loop():
     ch = character.Snake(3)
     apple = character.Apple(1, 1)
     game_exit = False
+    peewee_bd.Snake.get_or_create(name='Snake')
+    snake = peewee_bd.Snake.get(name='Snake')
+    ch.score = snake.score
+    ch.direction = snake.direction
+    ch.segment[0] = snake.head_coords
+    for i in range(ch.length - 1, 0, -1):
+        ch.segment[i] = snake.body_coords[i - 1]
 
     while not game_exit:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True
-
-        peewee_bd.Snake.get_or_create(name='Snake')
 
         game_display.fill(colors.WHITE)
 
@@ -45,31 +49,29 @@ def game_loop():
             elif event.key == pygame.K_DOWN:
                 ch.move_down()
             if event.key == pygame.K_ESCAPE:
-                peewee_bd.Snake.create(name='Snake', score=ch.score,
-                                       head_coords=(ch.segment_x[0], ch.segment_y[0]),
-                                       teil_coords=(ch.segment_x[ch.length], ch.segment_y[ch.length]),
-                                       direction=ch.direction)
-                peewee_bd.db.close()
+                snake.score = ch.score
+                snake.head_coords = ch.segment[0]
+                for i in range(ch.length - 1, 0, -1):
+                    snake.body_coords.append(figures.Point(ch.segment[i - 1].x, ch.segment[i - 1].y))
+                snake.direction = ch.direction
                 game_exit = True
 
         ch.update()
         ch.draw(game_display)
         apple.draw(game_display)
 
-        figures.Circle(200, 200, 20, colors.RED).draw(game_display)
-
         for i in range(1, ch.length):
-            if game.collision(ch.segment_x[i], ch.segment_y[i], ch.segment_x[0], ch.segment_y[0], 15):
+            if game.collision(ch.segment[i], ch.segment[0], 15):
                 print("You lose!")
-                peewee_bd.Snake.create(name='Snake', score=0,
-                                       head_coords=(0, 0),
-                                       teil_coords=(0, 0),
-                                       direction=0)
-                peewee_bd.db.close()
+                snake.score = 0
+                snake.head_coords = (0, 0)
+                for i in range(ch.length - 1, 0, -1):
+                    snake.body_coords[i] = (0, 0)
+                snake.direction = 0
                 exit(0)
 
         for i in range(0, ch.length):
-            if game.collision(ch.segment_x[0], ch.segment_y[0], apple.x, apple.y, 15):
+            if game.collision(ch.segment[0], apple, 15):
                 apple.x = random.randint(1, 40) * 20
                 apple.y = random.randint(1, 30) * 20
                 ch.score += 1

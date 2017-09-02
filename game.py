@@ -1,5 +1,5 @@
-def collision(x1, y1, x2, y2, l):
-    if x1 >= x2 and x1 <= x2 + l:
-        if y1 >= y2 and y1 <= y2 + l:
+def collision(p1, p2, l):
+    if p1.x >= p2.x and p1.x <= p2.x + l:
+        if p1.y >= p2.y and p1.y <= p2.y + l:
             return True
     return False
